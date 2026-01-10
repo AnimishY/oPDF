@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnimishY PDF Vault</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Hide scrollbar for reader section */
+        #reader-step {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        #reader-step::-webkit-scrollbar {
+            display: none;  /* Chrome, Safari and Opera */
+        }
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Animated branding */
+        .brand-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #1a365d 0%, #4a5568 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            font-weight: 700;
+            border: 2px solid #1a365d;
+            position: relative;
+            overflow: hidden;
+            font-family: 'IBM Plex Serif', Georgia, serif;
+        }
+        
+        .brand-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .brand-text {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-weight: 700;
+            font-size: 28px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .brand-subtitle {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+        
+        .login-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div id="login-container" class="login-screen">
+        <div class="login-box">
+            <div class="login-icon">📄</div>
+            <div class="brand-logo">
+                <div class="brand-icon">A</div>
+                <div>
+                    <h1 class="brand-text">AnimishY</h1>
+                    <p class="brand-subtitle"></p>
+                </div>
+            </div>
+            <p class="login-subtitle">Secure documents, anywhere you work</p>
+            <input type="password" id="password-input" placeholder="Enter password" autocomplete="off">
+            <button type="button" class="btn-primary" onclick="checkPassword()">Access Vault</button>
+            <p id="error-message" class="error"></p>
+        </div>
+    </div>
+
+    <div id="app-container" class="hidden">
+        <section id="library-step" class="library-step">
+            <header class="library-header">
+                <div>
+                    <p class="eyebrow">Private document library</p>
+                    <div class="brand-logo">
+                        <div class="brand-icon" style="width: 36px; height: 36px; font-size: 18px;">A</div>
+                        <div>
+                            <h1 class="brand-text" style="font-size: 32px; margin: 0;">AnimishY</h1>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="text-button" onclick="logout()">Logout</button>
+            </header>
+
+            <div class="library-content">
+                <div class="search-wrapper">
+                    <label for="search-input" class="search-label">Search documents</label>
+                    <div class="search-input">
+                        <span class="search-icon">🔍</span>
+                        <input
+                            id="search-input"
+                            type="text"
+                            placeholder="Filter by title, author, or keyword"
+                            oninput="filterPDFs()"
+                            autocomplete="off"
+                        >
+                    </div>
+                </div>
+
+                <div id="pdf-list" class="pdf-list" aria-live="polite"></div>
+
+                <p class="library-footnote">
+                    Add PDFs to the <code>pdfs/</code> folder and rerun <code>update_pdfs.py</code> to refresh the catalog.
+                </p>
+            </div>
+        </section>
+
+        <section id="reader-step" class="reader-step hidden" style="padding: 0;">
+            <div class="reader-header" style="padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <button type="button" class="btn-back" onclick="backToLibrary()">← Back to Library</button>
+                    <span style="font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600;">Now Reading:</span>
+                    <h2 id="current-pdf-title" style="margin: 0; font-size: 1rem; font-weight: 600;"></h2>
+                </div>
+                <button type="button" class="text-button" onclick="logout()">Logout</button>
+            </div>
+            <div class="reader-content">
+                <iframe id="pdf-viewer" title="PDF viewer" src="" frameborder="0" loading="lazy" style="width: 100%; height: 90vh; border: 2px solid #d0d0d0;"></iframe>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

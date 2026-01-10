@@ -1,0 +1,11 @@
+# Optional: uncomment if you don't want to commit PDFs
+# pdfs/*.pdf
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor folders
+.vscode/
+.idea/
