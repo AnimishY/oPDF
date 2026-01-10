@@ -7,10 +7,11 @@ const CONFIG = {
 
 // PDF records
 const pdfFiles = [
-    { name: "4ed   Solution", file: "4 - Solution.pdf" },
-    { name: "6ed   William Stallings   Cryptography And Network Security", file: "6 - William Stallings - Cryptography and Network Security_ Principles and Practice (2014, Pearson).pdf" },
-    { name: "7ed   William Stallings   Cryptography And Network Security", file: "7 - William Stallings - Cryptography and Network Security_ Principles and Practice, Global Edition (2017, Pearson)i.pdf" },
-    { name: "8ed   William Stallings   Cryptography And Network Security", file: "8 - William Stallings - Cryptography and Network Security_ Principles and Practice, Global Edition (2022, Pearson).pdf" }
+    { name: "4   Solution", file: "4 - Solution.pdf" },
+    { name: "6   William Stallings   Cryptography And Network Security  Principles And Practice (2014, Pearson)", file: "6 - William Stallings - Cryptography and Network Security_ Principles and Practice (2014, Pearson).pdf" },
+    { name: "7   William Stallings   Cryptography And Network Security  Principles And Practice, Global Edition (2017, Pearson)I", file: "7 - William Stallings - Cryptography and Network Security_ Principles and Practice, Global Edition (2017, Pearson)i.pdf" },
+    { name: "8   William Stallings   Cryptography And Network Security  Principles And Practice, Global Edition (2022, Pearson)", file: "8 - William Stallings - Cryptography and Network Security_ Principles and Practice, Global Edition (2022, Pearson).pdf" },
+    { name: "Ubiquitous Attendance System", file: "Ubiquitous Attendance System.pdf" }
 ];
 
 // SHA-256 hashing function
