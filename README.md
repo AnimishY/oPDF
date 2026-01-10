@@ -4,7 +4,7 @@ A simple, secure web application to access your PDFs from anywhere with password
 
 ## 🚀 Features
 
-- 🔒 Password protection
+- 🔒 Encrypted password protection (SHA-256 hashing)
 - 📱 Responsive design (works on mobile, tablet, desktop)
 - 🔍 Search functionality
 - 👁️ Built-in PDF viewer
@@ -52,23 +52,41 @@ const pdfFiles = [
 
 ### 3. Change Password
 
-In `script.js`, change the default password:
+**Important: Passwords are now encrypted using SHA-256 hashing for security.**
+
+#### Option 1: Use the Hash Generator (Recommended)
+1. Open `generate_hash.html` in your browser
+2. Enter your desired password
+3. Click "Generate Hash"
+4. Copy the generated hash
+5. Open `script.js` and replace the `passwordHash` value in CONFIG:
 
 ```javascript
 const CONFIG = {
-    password: "pdf2024", // Change this to your desired password
+    passwordHash: "your_generated_hash_here",
     pdfFolder: "pdfs/"
 };
 ```
 
+#### Option 2: Use Online SHA-256 Tool
+1. Go to any SHA-256 hash generator (e.g., https://emn178.github.io/online-tools/sha256.html)
+2. Enter your password and generate the hash
+3. Copy the hash and update `script.js` as shown above
+
+**Security Note:** The current password is "hiddenlol" (hash: won't tell). Change this immediately!
+
 ### 4. Deploy to GitHub Pages
 
-1. Create a new repository on GitHub
-2. Upload all files (index.html, style.css, script.js, pdfs folder, update scripts, and README)
-3. Go to repository Settings → Pages
-4. Select the branch (usually `main`) and root folder
-5. Click Save
-6. Your site will be available at: `https://yourusername.github.io/repositoryname/`
+**Important Security Steps:**
+1. Generate a new password hash using `generate_hash.html`
+2. Update the hash in `script.js`
+3. DO NOT commit `generate_hash.html` to your repository (it's in .gitignore)
+4. Create a new repository on GitHub
+5. Upload all files (index.html, style.css, script.js, pdfs folder, update scripts, and README)
+6. Go to repository Settings → Pages
+7. Select the branch (usually `main`) and root folder
+8. Click Save
+9. Your site will be available at: `https://yourusername.github.io/repositoryname/`
 
 ### 5. Access Your PDFs
 
@@ -118,11 +136,18 @@ oPDF/
 
 ## ⚠️ Security Note
 
-This is a basic password protection suitable for personal use. For sensitive documents, consider:
-- Using a stronger authentication system
-- Implementing server-side validation
-- Using HTTPS (GitHub Pages provides this automatically)
-- Not committing sensitive PDFs to public repositories (use private repos)
+This application uses SHA-256 hashing to protect your password from being visible in plain text in the code. However, note:
+
+- This is client-side authentication suitable for personal use
+- The password hash is still visible in the source code
+- For sensitive documents, consider:
+  - Using a stronger authentication system with server-side validation
+  - Implementing server-side validation
+  - Using HTTPS (GitHub Pages provides this automatically)
+  - Using private GitHub repositories for sensitive PDFs
+  - Adding additional layers of security (2FA, etc.)
+
+**Best Practice:** Use a unique password for this vault that you don't use elsewhere.
 
 ## 🌐 Browser Compatibility
 

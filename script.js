@@ -1,6 +1,7 @@
 // Configuration
 const CONFIG = {
-    password: "pdf2024",
+    // SHA-256 hash of "letsword"
+    passwordHash: "1b233c3113dc67085b649728918b5e1c2f1d1f60ff3eaabd31ecdcdf34dfd283",
     pdfFolder: "pdfs/"
 };
 
@@ -11,6 +12,16 @@ const pdfFiles = [
     { name: "7ed   William Stallings   Cryptography And Network Security", file: "7 - William Stallings - Cryptography and Network Security_ Principles and Practice, Global Edition (2017, Pearson)i.pdf" },
     { name: "8ed   William Stallings   Cryptography And Network Security", file: "8 - William Stallings - Cryptography and Network Security_ Principles and Practice, Global Edition (2022, Pearson).pdf" }
 ];
+
+// SHA-256 hashing function
+async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
 
 const loginContainer = document.getElementById('login-container');
 const appContainer = document.getElementById('app-container');
@@ -37,22 +48,28 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function checkPassword() {
+async function checkPassword() {
     const input = document.getElementById('password-input');
     const errorMsg = document.getElementById('error-message');
 
-    if (input && input.value === CONFIG.password) {
-        sessionStorage.setItem('pdfVaultAuth', 'true');
-        if (errorMsg) {
-            errorMsg.textContent = '';
+    if (input && input.value) {
+        const inputHash = await hashPassword(input.value);
+        
+        if (inputHash === CONFIG.passwordHash) {
+            sessionStorage.setItem('pdfVaultAuth', 'true');
+            if (errorMsg) {
+                errorMsg.textContent = '';
+            }
+            showApp();
+        } else if (errorMsg) {
+            errorMsg.textContent = 'Incorrect password. Please try again.';
+            if (input) {
+                input.value = '';
+                input.focus();
+            }
         }
-        showApp();
     } else if (errorMsg) {
-        errorMsg.textContent = 'Incorrect password. Please try again.';
-        if (input) {
-            input.value = '';
-            input.focus();
-        }
+        errorMsg.textContent = 'Please enter a password.';
     }
 }
 
