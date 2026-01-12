@@ -12,3 +12,6 @@ desktop.ini
 
 # Password hash generator (for security)
 generate_hash.html
+
+# Password file
+password.txt

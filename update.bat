@@ -30,6 +30,23 @@ if %errorlevel% equ 0 (
     echo √ Update completed successfully!
     echo    You can now open index.html in your browser
     
+    REM Encrypt PDFs before pushing
+    echo.
+    echo ============================================
+    echo   Encrypting PDF Files
+    echo ============================================
+    echo.
+    
+    python encrypt_pdfs.py
+    
+    if %errorlevel% neq 0 (
+        echo.
+        echo X PDF encryption failed
+        echo    Aborting git operations
+        pause
+        exit /b 1
+    )
+    
     REM Git operations
     echo.
     echo ============================================
