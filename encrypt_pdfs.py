@@ -63,14 +63,15 @@ def main():
     print(f"Password loaded from password.txt")
     print()
     
-    # Find all PDF files in current directory
-    pdf_files = list(Path(".").glob("*.pdf"))
+    # Find all PDF files in pdfs subdirectory
+    pdf_dir = Path("pdfs")
+    pdf_files = list(pdf_dir.glob("*.pdf"))
     
     if not pdf_files:
-        print("No PDF files found in current directory")
+        print(f"No PDF files found in {pdf_dir} directory")
         return
     
-    print(f"Found {len(pdf_files)} PDF file(s)")
+    print(f"Found {len(pdf_files)} PDF file(s) in {pdf_dir} directory")
     print()
     
     encrypted_count = 0
